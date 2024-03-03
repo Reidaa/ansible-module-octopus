@@ -39,6 +39,8 @@ def main():
         ),
         id=dict(type="str"),
         name=dict(type="str"),
+        identifier=dict(type="str"),
+        identifier_type=dict(type="str", choices=["id", "name"]),
     )
 
     module_args.update(environment_args)
@@ -47,10 +49,13 @@ def main():
         argument_spec=module_args,
         required_if=[
             ("operation", "create", []),
-            ("operation", "update", ["id"]),
-            ("operation", "read", []),
-            ("operation", "delete", ["id"]),
+            ("operation", "update", ["identifier"]),
+            ("operation", "read", ["identifier"]),
+            ("operation", "delete", ["identifier"]),
         ],
+        required_by={
+            "identifier": ["identifier_type"],
+        },
         mutually_exclusive=[
             ["id", "name"],
         ],
